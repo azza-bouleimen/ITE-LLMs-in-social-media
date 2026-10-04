@@ -45,7 +45,7 @@ parser.add_argument('--download_directory', type=str, default='~/.cache/huggingf
 
 args = parser.parse_args()
 
-nbr_simulations = 1
+nbr_simulations = 100
 nbr_iterations = 5
 feed_length = 4
 
@@ -59,7 +59,6 @@ feed_length = 4
 # LLM_model = "gpt-5-nano"
 # LLM_model = "meta-llama/Meta-Llama-3.1-8B-Instruct"
 # LLM_model = "Qwen/Qwen2.5-7B-Instruct"
-
 # LLM_model = "google/gemma-3-4b-it"
 
 
@@ -69,14 +68,15 @@ feed_length = 4
 
 # LLM_model = "gpt-3.5-turbo-0125"
 # LLM_model = "test"
-# temperature = 0.7
+# temperature = 0.1
+# temperature = 1
 
 LLM_model = args.model
 temperature = args.temperature
 attribute = args.attribute
 CUSTOM_MODEL_CACHE_DIR = args.download_directory
 
-nbr_trials = 1  # Single run is enough now => previously checked with three, no difference across trials
+nbr_trials = 3  # Single run is enough now => previously checked with three, no difference across trials
 
 def get_daytime():
     now = datetime.datetime.now()
@@ -96,7 +96,6 @@ def get_daytime():
 
 def extract_actions(output_text, length_feed = 4):
     # ex output_text "T1: reshare \nT2: do nothing\nT3: do nothing\nT4: do nothing"
-    # TODO This is still buggy for GPT-3.5-turbo-0125, mistral
     actions = []
     comments = []
     for i in range(1, length_feed + 1):
