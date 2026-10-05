@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#SBATCH --job-name=Machine_Society
+#SBATCH --output=log/%j_open_weights.out # Save output logs with job ID
+#SBATCH --error=log/%j_open_weights.err  # Save error logs with job ID
+#SBATCH --time=30:00:00       # Max run time 15-00:00:00
+#SBATCH --mem-per-cpu=36000
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=1
+#SBATCH --gpus=1
+#SBATCH --constraint="H100|H200|A100"
+
+echo "Job started at: $(date)"
+echo "Job ID: ${SLURM_JOB_ID}"
+
+# Load necessary modules
+#module load a100
+#module load amd
+# Move to your working directory
+cd /PATH/TO/YOUR/CODE/ON/THE/CLUSTER
+# Activate the conda environment
+source $(conda info --base)/etc/profile.d/conda.sh
+conda activate NAME_OF_YOUR_CONDA_ENV
+
+# Run your script
+python main_experiment.py --scenario SCENARIO --model MODEL --temperature TEMPERATURE --attribute ATTRIBUTE --download_directory /home/aboule/scratch
+
+echo "DONE Experiment open weights"
+
